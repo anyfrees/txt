@@ -1,0 +1,52 @@
+!
+! Title: GESP blacklist
+! Description: HFBZKS
+! KSZY
+! Last modified: 2024-12-05T12:27:13.306Z
+!
+! Compiled by @CHENGKAI
+!
+||*.baidu.com^
+||*.google.com^
+||*.bing.com^
+||*.search.yahoo.com^
+||*.sogou.com^
+||*.quark.sm.cn^
+||*.chinaso.com^
+||*.leetcode-cn.com^
+||*.lintcode.com^
+||*.nowcoder.com^
+||*.freecodecamp.org^
+||*.cnblogs.com^
+||*.juejin.cn^
+||*.segmentfault.com^
+||*.oschina.net^
+||*.51cto.com^
+||*.zhihu.com^
+||*.cnblogs.com^
+||*.csdn.net^
+||*.luogu.com.cn^
+||*.bilibili.com^
+||*.imooc.com^
+||*.icourse163.org^
+||*.163.com^
+||*.lanqiao.cn^
+||*.runoob.com^
+||*.w3cschool.cn^
+||*.how2j.cn^
+||*.yiibai.com^
+||*.ifeve.com^
+||*.twle.cn^
+||*.xfyun.cn^
+||*.metaso.cn^
+||*.doubao.com^
+||*.moonshot.cn^
+||*.quark.cn^
+||yiyan.baidu.com^
+||*.aliyun.com^
+||*.fastnlp.top^
+||*.doubao.com^
+||*.chatglm.cn^
+||*.openai.com/^
+||*.claude.com/^
+||*.u-shannon.com^
