@@ -1,0 +1,36 @@
+!
+! Title: url blacklist
+! Description: 黑名单
+! 
+! Last modified: 2024-12-10T12:27:13.306Z
+!
+! Compiled by @CHENGKAI
+!
+||*.7k7k.com^
+||*.4399.com^
+||soft.360.cn^
+||down.360safe.com^
+||download.baidu.com^
+||dl.softmgr.qq.com^
+||pc.qq.com^
+||update.2345.com^
+||dldir1.qq.com^
+||d1.huoshan.com^
+||download.com^
+||softonic.com^
+||soft.2345.cn^
+||pc6.com^
+||xiazai.com^
+||xiazaiba.com^
+||newasp.net^
+||haozip.com^
+||*.52pojie.cn^
+||*.lanzoub.com^
+||*.wodown.com^
+||*.csdn.net
+||*.3dmgame.com
+||*.heishou.org
+||*.liqucn.com
+||*.jb51.net
+||*.yangyangxz.com
+||*.itmop.com
