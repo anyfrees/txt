@@ -5,41 +5,5 @@
 <title>AdGuard规则列表</title>
 </head>
 <body>
- 
-<div id="fileList">Fetching file list...</div>
- 
-<script>
-// 获取文件列表
-function getFilesInDirectory(directory, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', directory, true);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      var fileList = xhr.responseText.split('\n');
-      callback(fileList);
-    }
-  };
-  xhr.send();
-}
- 
-// 显示文件列表
-function displayFileList(fileList) {
-  var fileListElement = document.getElementById('fileList');
-  fileListElement.innerHTML = '';
-  fileList.forEach(function(fileName) {
-    if (fileName.endsWith('.txt')) {
-      var link = document.createElement('a');
-      link.href = fileName;
-      link.textContent = fileName;
-      fileListElement.appendChild(link);
-      fileListElement.appendChild(document.createElement('br'));
-    }
-  });
-}
- 
-// 获取当前目录下的文件列表
-getFilesInDirectory('.', displayFileList);
-</script>
- 
-</body>
+ https://github.com/anyfrees/txt<p></p>
 </html>
