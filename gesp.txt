@@ -2,7 +2,7 @@
 ! Title: GESP blacklist
 ! Description: HFBZKS
 ! KSZY
-! Last modified: 2024-12-05T12:27:13.306Z
+! Last modified: 2025-01-15T12:27:13.306Z
 !
 ! Compiled by @CHENGKAI
 !
@@ -50,3 +50,36 @@
 ||*.openai.com/^
 ||*.claude.com/^
 ||*.u-shannon.com^
+||*.yahoo.com
+||*.duckduckgo.com
+||*.so.com
+||*.quora.com
+||*.stackoverflow.com
+||*.wikipedia.org
+||*.github.com
+||*.mozilla.org
+||*.runoob.com
+||*.cnn.com
+||*.bbc.com
+||*.toutiao.com
+||*.stackexchange.com
+||*.csdn.net
+||*.jianshu.com
+||*.cnblogs.com
+||*.gitlab.com
+||*.bitbucket.org
+||*.replit.com
+||*.codesandbox.io
+||*.jsfiddle.net
+||*.leetcode.com
+||*.hackerrank.com
+||*.codecademy.com
+||*.coursera.org
+||*.geekbang.org
+||docs.python.org
+||*.cppreference.com
+||*.isocpp.org
+||*.iso.org
+||learn.microsoft.com
+||*.mit.edu
+||*.scratch-wiki.info
