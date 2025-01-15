@@ -57,6 +57,7 @@
 ||*.stackoverflow.com^
 ||*.wikipedia.org^
 ||*.github.com^
+||github.com^
 ||*.mozilla.org^
 ||*.runoob.com^
 ||*.cnn.com^
@@ -69,7 +70,9 @@
 ||*.gitlab.com^
 ||*.bitbucket.org^
 ||*.replit.com^
+||replit.com^
 ||*.codesandbox.io^
+||codesandbox.io^
 ||*.jsfiddle.net^
 ||*.leetcode.com^
 ||*.hackerrank.com^
@@ -83,3 +86,4 @@
 ||learn.microsoft.com^
 ||scratch.mit.edu^
 ||*.scratch-wiki.info^
+||scratch-wiki.info^
