@@ -81,5 +81,5 @@
 ||*.isocpp.org^
 ||*.iso.org^
 ||learn.microsoft.com^
-||*.mit.edu^
+||scratch.mit.edu^
 ||*.scratch-wiki.info^
