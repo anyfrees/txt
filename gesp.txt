@@ -7,8 +7,10 @@
 ! Compiled by @CHENGKAI
 !
 ||*.baidu.com^
+||www.baidu.com^
 ||*.google.com^
 ||*.bing.com^
+||www.bing.com^
 ||*.search.yahoo.com^
 ||*.sogou.com^
 ||*.quark.sm.cn^
@@ -87,3 +89,5 @@
 ||scratch.mit.edu^
 ||*.scratch-wiki.info^
 ||scratch-wiki.info^
+! ------屏蔽所有
+/.*/
