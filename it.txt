@@ -1,0 +1,2 @@
+@@||https://www.luogu.com.cn^$important
+@@||www.luogu.com.cn^$important
