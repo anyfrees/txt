@@ -89,5 +89,3 @@
 ||scratch.mit.edu^
 ||*.scratch-wiki.info^
 ||scratch-wiki.info^
-! ------屏蔽所有
-/.*/
