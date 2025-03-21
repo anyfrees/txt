@@ -2,13 +2,16 @@
 ! Title: 白名单
 ! Description: HFBZKS
 ! KSZY
-! Last modified: 2025-01-15T12:27:13.306Z
+! Last modified: 2025-03-21T12:27:13.306Z
 !
 ! Compiled by @CHENGKAI
 !
-||ypc.zhongkediman.com^
-||cdn.youngcode.net^
-||frog.51goc.com^
-||gocoss.oss-cn-shenzhen.aliyuncs.com^
-||vip.51goc.com^
-||projects.scratch.mit.edu^
+@@||*.thusaac.com^$important
+@@||*.scratchoj.com^$important
+@@||*.myqcloud.com^$important
+@@||*.tencentcs.com^$important
+@@||*.tencentapigw.com^$important
+@@||ip.useragentinfo.com^$important
+@@||iplark.com^$important
+@@||pv.sohu.com^$important
+@@||*.tdnsv8.com^$important
