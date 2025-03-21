@@ -16,3 +16,4 @@
 @@||pv.sohu.com^$important
 @@||*.tdnsv8.com^$important
 @@||gesp-exam.ccf.org.cn^$important
+@@||gesp.ccf.org.cn^$important
