@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Platinum catalyst solution | 铂金触媒液</title>
+
+  <style>
+    :root{
+      --bg-color:#0a0a0a;
+      --card-bg:#141414;
+      --text-main:#e0e0e0;
+      --text-muted:#888888;
+      --accent-platinum:#E5E4E2;
+      --danger-red:#ff4d4d;
+      --font-main:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:var(--bg-color);
+      color:var(--text-main);
+      font-family:var(--font-main);
+      line-height:1.6;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none;}
+    ul{list-style:none;}
+
+    .fx-bg{
+      position:fixed; inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:
+        radial-gradient(1200px 700px at 50% 35%, rgba(255,170,80,0.05), rgba(0,0,0,0) 60%),
+        radial-gradient(900px 650px at 20% 80%, rgba(255,255,255,0.02), rgba(0,0,0,0) 60%),
+        radial-gradient(900px 650px at 80% 80%, rgba(255,255,255,0.02), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.78) 45%, rgba(0,0,0,0.92) 100%);
+    }
+    #burnerCanvas{
+      width:100%;
+      height:100%;
+      display:block;
+      filter: blur(1.6px) saturate(1.18) brightness(0.92);
+      opacity: 0.95;
+    }
+    .fx-vignette{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(1200px 700px at 50% 28%, rgba(229,228,226,0.08), rgba(0,0,0,0) 55%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.58) 78%, rgba(0,0,0,0.86) 100%),
+        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72));
+      opacity:0.78;
+      pointer-events:none;
+    }
+
+    .page{position:relative; z-index:1;}
+
+    @media (prefers-reduced-motion: reduce){
+      .fx-bg{display:none;}
+    }
+
+    .container{max-width:800px;margin:0 auto;padding:0 20px;}
+    h1,h2,h3{font-weight:300;letter-spacing:2px;text-transform:uppercase;}
+    .gradient-text{
+      background:linear-gradient(135deg,#fff 0%,#777 50%,#fff 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      font-weight:700;
+    }
+    .highlight{color:var(--accent-platinum);font-weight:bold;text-shadow:0 0 16px rgba(229,228,226,0.10);}
+
+    header{
+      height:90vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      background: radial-gradient(circle at center, rgba(26,26,26,0.72) 0%, rgba(0,0,0,0.86) 70%, rgba(0,0,0,0.95) 100%);
+      overflow:hidden;
+    }
+    header::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 600px at 50% 35%, rgba(229,228,226,0.08), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.72) 100%);
+      pointer-events:none;
+    }
+    header > .container{position:relative;z-index:2;}
+
+    .brand-logo{
+      font-size:1.2rem;
+      letter-spacing:5px;
+      margin-bottom:20px;
+      color:var(--text-muted);
+      border:1px solid rgba(136,136,136,0.8);
+      padding:7px 16px;
+      display:inline-block;
+      position:relative;
+      overflow:hidden;
+      backdrop-filter:blur(2px);
+      box-shadow:0 10px 30px rgba(0,0,0,0.22);
+    }
+    .brand-logo::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 12% 30%, rgba(255,255,255,0.08), rgba(255,255,255,0) 32%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), rgba(255,255,255,0) 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+      opacity:0.18;
+      pointer-events:none;
+    }
+    .brand-logo::after{
+      content:"";
+      position:absolute;
+      top:-40%;
+      left:-80%;
+      width:60%;
+      height:180%;
+      background: linear-gradient(115deg,
+        rgba(255,255,255,0) 0%,
+        rgba(229,228,226,0.08) 32%,
+        rgba(229,228,226,0.55) 45%,
+        rgba(229,228,226,0.08) 58%,
+        rgba(255,255,255,0) 100%);
+      mix-blend-mode:screen;
+      opacity:0.9;
+      animation:metalSweep 4.8s ease-in-out infinite;
+    }
+    @keyframes metalSweep{
+      0%{transform:translateX(-10%);opacity:0;}
+      12%{opacity:0.95;}
+      38%{transform:translateX(260%);opacity:0.90;}
+      48%{opacity:0;}
+      100%{transform:translateX(260%);opacity:0;}
+    }
+
+    h1{
+      font-size:3.5rem;
+      margin-bottom:10px;
+      line-height:1.1;
+      text-shadow:0 0 18px rgba(229,228,226,0.10);
+    }
+    .subtitle{
+      font-size:1.2rem;
+      color:var(--text-muted);
+      max-width:600px;
+      margin-top:20px;
+    }
+    .scroll-down{
+      position:absolute;
+      bottom:40px;
+      font-size:0.8rem;
+      color:var(--text-muted);
+      animation:bounce 2s infinite;
+      z-index:2;
+    }
+    @keyframes bounce{
+      0%,20%,50%,80%,100%{transform:translateY(0);}
+      40%{transform:translateY(-10px);}
+      60%{transform:translateY(-5px);}
+    }
+
+    .section{
+      padding:80px 0;
+      border-bottom:1px solid #222;
+      position:relative;
+    }
+    .section::before{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.78));
+      opacity:0.26;
+      pointer-events:none;
+    }
+    .section > .container{position:relative;z-index:1;}
+
+    .philosophy{text-align:center;}
+    .quote{
+      font-size:1.5rem;
+      font-style:italic;
+      color:var(--accent-platinum);
+      margin-bottom:30px;
+      opacity:0.9;
+      text-shadow:0 0 22px rgba(229,228,226,0.10);
+    }
+    .desc{color:var(--text-muted);max-width:720px;margin:0 auto;}
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+      gap:30px;
+      margin-top:50px;
+    }
+    .feature-card{
+      background:rgba(20,20,20,0.86);
+      padding:30px;
+      border:1px solid #222;
+      transition:0.3s;
+      box-shadow:0 10px 34px rgba(0,0,0,0.30);
+      backdrop-filter:blur(2px);
+    }
+    .feature-card:hover{
+      border-color:rgba(136,136,136,0.9);
+      transform:translateY(-5px);
+    }
+    .icon{
+      font-size:2rem;
+      margin-bottom:20px;
+      color:var(--accent-platinum);
+      filter:drop-shadow(0 0 10px rgba(229,228,226,0.12));
+    }
+    .feature-title{font-size:1.1rem;margin-bottom:10px;color:#fff;}
+    .feature-text{font-size:0.9rem;color:var(--text-muted);}
+
+    .steps-wrapper{position:relative;margin-top:50px;}
+    .step-item{display:flex;margin-bottom:60px;position:relative;}
+    .step-number{
+      font-size:4rem;
+      font-weight:700;
+      color:#1a1a1a;
+      position:absolute;
+      left:-20px;
+      top:-20px;
+      z-index:-1;
+    }
+    .step-content{
+      border-left:2px solid var(--accent-platinum);
+      padding-left:30px;
+      margin-left:20px;
+    }
+    .step-title{font-size:1.2rem;color:#fff;margin-bottom:10px;}
+    .step-desc{color:var(--text-muted);font-size:0.95rem;}
+    .subline{color:#b0b0b0;font-size:0.92rem;margin-top:10px;}
+    .subline b{color:#fff;font-weight:600;}
+
+    .faq-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:30px;}
+    .faq-item{
+      background:rgba(20,20,20,0.86);
+      border:1px solid #222;
+      padding:18px;
+      backdrop-filter:blur(2px);
+      box-shadow:0 10px 34px rgba(0,0,0,0.26);
+    }
+    .faq-q{color:#fff;font-size:0.98rem;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;}
+    .faq-a{color:var(--text-muted);font-size:0.92rem;}
+
+    .warning-box{
+      background:rgba(20,0,0,0.50);
+      border:1px solid #440000;
+      padding:40px;
+      text-align:center;
+      margin-top:20px;
+      backdrop-filter:blur(2px);
+      box-shadow:0 10px 34px rgba(0,0,0,0.30);
+    }
+    .warning-icon{
+      color:var(--danger-red);
+      font-size:3rem;
+      margin-bottom:20px;
+      display:block;
+      filter:drop-shadow(0 0 10px rgba(255,77,77,0.18));
+    }
+    .warning-title{color:var(--danger-red);margin-bottom:15px;}
+    .warning-text{color:#aaa;font-size:0.9rem;}
+
+    footer{
+      padding:40px 0;
+      text-align:center;
+      color:#444;
+      font-size:0.8rem;
+      letter-spacing:1px;
+      position:relative;
+    }
+
+    @media (max-width:600px){
+      h1{font-size:2.5rem;}
+      .section{padding:50px 0;}
+      .brand-logo{font-size:1.05rem;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fx-bg" aria-hidden="true">
+    <canvas id="burnerCanvas"></canvas>
+    <div class="fx-vignette"></div>
+  </div>
+
+  <div class="page">
+    <header>
+      <div class="container">
+        <div class="brand-logo">PREMIUM CATALYST</div>
+        <h1>PURE <span class="gradient-text">PT</span></h1>
+        <p class="subtitle">纯铂触媒液 · 专为极致冷启动而生</p>
+      </div>
+      <div class="scroll-down">向下滑动探索</div>
+    </header>
+
+    <section class="section">
+      <div class="container philosophy">
+        <p class="quote">“不只是修复，更是性能的进化。”</p>
+        <p class="desc">
+          摒弃传统钯混合方案，我们采用了极高成本的<b>纯铂 (Pure Platinum)</b> 配方。
+          纳米级离子分散工艺，赋予您的怀炉前所未有的<b>零秒响应</b>能力。
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom:40px;">CORE FEATURES</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">⚡</div>
+            <h3 class="feature-title">极速冷启</h3>
+            <p class="feature-text">纯铂特有的高活性表面能，无需明火预热太久，遇气即燃，告别反复打火。</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">💎</div>
+            <h3 class="feature-title">纯铂工艺</h3>
+            <p class="feature-text">拒绝廉价填料。100% 高纯度氯铂酸盐母液，还原后形成致密铂黑层。</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">🧬</div>
+            <h3 class="feature-title">深度渗透</h3>
+            <p class="feature-text">特调表面张力载体，瞬间穿透加厚陶瓷棉，由内而外建立立体催化网。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom:60px;">USER MANUAL</h2>
+        <div class="steps-wrapper">
+
+          <div class="step-item">
+            <div class="step-number">01</div>
+            <div class="step-content">
+              <h3 class="step-title">稀释与预备 (Preparation)</h3>
+              <p class="step-desc">
+                本品为<b>高浓缩母液</b>。请使用<b>纯净水</b>按 <span class="highlight">1:2</span> 或 <span class="highlight">1:3</span> 比例稀释（例如：1ml 母液 + 2ml 纯水）。<br><br>
+                稀释介质建议：去离子水 / 蒸馏水 / 可靠品牌纯净水（<b>哇哈哈纯净水可用</b>）。可选“水+酒精”用于快干与助渗：建议先配 <b>水:酒精≈7:3</b>，再按 1:2 或 1:3 稀释母液。<b>不建议全酒精稀释母液</b>，容易干得太快导致结晶、渗透不足。<br><br>
+                配比建议：<b>1:3</b>（新手优先/日常保养/新棉试涂，更稳更不易结晶），<b>1:2</b>（老棉再生/冷启动明显变差，更强但更要求少量多次）。原则：<b>先稀后浓、分两次补涂</b>通常优于一次上浓。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">02</div>
+            <div class="step-content">
+              <h3 class="step-title">滴加浸润 (Infiltration)</h3>
+              <p class="step-desc">
+                将稀释后的液体均匀滴在棉头上，直至棉头完全湿润且颜色分布均匀（呈金黄色/黄褐均可）。随后置于阴凉处<b>自然风干</b>，直至水分完全蒸发。<br><br>
+                用量手法：建议<b>少量多次</b>滴加，目标是<b>润而不滴</b>（不应出现明显积液）。干燥后若出现白色/硬壳结晶：多为浓度偏高或干燥过快，可降低到 1:3 并减少酒精比例。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">03</div>
+            <div class="step-content">
+              <h3 class="step-title">高温激活 (Activation)</h3>
+              <p class="step-desc">
+                这是最关键的一步，务必在<b>完全干燥</b>后进行。推荐以下任一方式：<br>
+                方式 A：在干燥棉头表面滴入<b>极少量</b>酒精，点燃后<b>仅让燃料自然燃尽</b>；<br>
+                方式 B：<b>离火烘烤激活</b>：火焰不直接接触棉头，保持 <span class="highlight">2–5 cm</span> 距离均匀加热，使其逐步完成还原激活。<br><br>
+                判定标准：棉头颜色由黄/黄褐转为<b>灰黑色催化态</b>（允许略不均匀）即代表激活成功。新手更建议优先方式 B（更温和可控，结晶与烧伤风险更低）。
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom:60px;">NEW CATALYST BUILD</h2>
+        <p class="desc" style="text-align:center;">
+          本段为<b>全新制作触媒</b>流程（从零制备新棉头/新载体）。修复 = 给旧触媒补铂；制作 = 从<b>载体处理 → 上铂浸渍 → 干燥 → 激活</b>完整建立催化层。
+        </p>
+
+        <div class="steps-wrapper">
+
+          <div class="step-item">
+            <div class="step-number">A1</div>
+            <div class="step-content">
+              <h3 class="step-title">载体选择 (Carrier)</h3>
+              <p class="step-desc">
+                推荐：<b>莫来石氧化铝纤维棉 / 陶瓷棉</b>或稳定耐温的多孔陶瓷载体。要求：无油、无胶、无明显粉尘团；避免后续点火难、异味大、活性不稳。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">A2</div>
+            <div class="step-content">
+              <h3 class="step-title">预处理与干燥 (Pre-clean & Dry)</h3>
+              <p class="step-desc">
+                若载体有粉尘：可用<b>纯净水</b>快速漂洗后轻压沥干；随后通风自然风干，或 <span class="highlight">40–80℃</span> 低温烘干至<b>完全干燥</b>。<br><br>
+                全新制作最怕“湿着激活”或“带油/带胶”：会导致飞溅、味道大、表面结晶、甚至活性层不牢。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">A3</div>
+            <div class="step-content">
+              <h3 class="step-title">浸渍液配制 (Impregnation Mix)</h3>
+              <p class="step-desc">
+                稀释水：去离子水/蒸馏水/可靠纯净水（<b>哇哈哈纯净水可用</b>）。全新触媒建议从 <span class="highlight">1:3</span> 打底开始建立均匀基础层；必要时再做第二轮补浸到 1:2。<br><br>
+                若需快干/助渗：可选水+酒精（先配 <b>水:酒精≈7:3</b>），再按 1:3 或 1:2 稀释母液；不建议全酒精。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">A4</div>
+            <div class="step-content">
+              <h3 class="step-title">上铂浸渍 (Load Pt)</h3>
+              <p class="step-desc">
+                采用<b>少量多次</b>滴加/浸润，目标状态为：<b>完全浸润但不积液（润而不滴）</b>。建议至少完成 <span class="highlight">2 轮</span>：第 1 轮 1:3 打底 → 完全干燥；第 2 轮按状态补浸（1:3 或 1:2）→ 再干燥。颜色可为淡黄/黄褐/金黄，关键是<b>均匀渗透</b>与<b>不过量</b>。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">A5</div>
+            <div class="step-content">
+              <h3 class="step-title">完全干燥 (Full Dry)</h3>
+              <p class="step-desc">
+                浸渍后必须<b>完全干燥</b>再激活。推荐通风自然干燥或 <span class="highlight">40–60℃</span> 低温烘干至无潮感。湿冷环境建议延长干燥时间，避免“外干内湿”。
+              </p>
+            </div>
+          </div>
+
+          <div class="step-item" style="margin-bottom:0;">
+            <div class="step-number">A6</div>
+            <div class="step-content">
+              <h3 class="step-title">激活（双方式）(Activation)</h3>
+              <p class="step-desc">
+                方式 A：滴入<b>极少量</b>酒精，点燃后<b>仅让燃料自然燃尽</b>；方式 B：<b>离火烘烤激活</b>（保持 <span class="highlight">2–5 cm</span> 距离均匀加热）。<br><br>
+                判定：颜色由黄/黄褐转为<b>灰黑色催化态</b>（允许略不均匀）即完成。新手优先方式 B，更稳更可控。
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom:20px;">TROUBLESHOOTING & FAQ</h2>
+        <p class="desc" style="text-align:center;">
+          用量、结晶、点火失败、异味、存储与稀释介质选择的快速排查与纠偏建议。
+        </p>
+
+        <div class="faq-grid">
+          <div class="faq-item">
+            <div class="faq-q">Q1 · 点不着 / 需要反复打火</div>
+            <div class="faq-a">
+              常见原因：未干透、激活热量不足、上铂太少或分布不均。处理：先确保完全干燥；优先采用离火烘烤激活；仍弱则按 1:3 少量补涂一轮后再激活。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q2 · 表面发白结晶 / 有硬壳</div>
+            <div class="faq-a">
+              常见原因：一次上浓、滴加过量、酒精比例过高导致干得太快。处理：降到 1:3，减少酒精比例（或纯水稀释），改为少量多次；必要时用少量纯水轻润溶解表面再吸干后重涂。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q3 · 点着后一会儿变暗/熄火</div>
+            <div class="faq-a">
+              常见原因：燃料供给/通气不匹配、载体过厚过密、催化层不均。处理：确保通气通道通畅；全新制作建议先做两轮 1:3 打底建立均匀层，再视情况加强到 1:2。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q4 · 异味大 / 刺鼻</div>
+            <div class="faq-a">
+              常见原因：载体带油带胶、未干透就激活、通风差。处理：载体先预清洁与充分干燥；激活步骤务必在通风处进行，避免吸入烟雾或蒸汽。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q5 · 母液/稀释液怎么存放</div>
+            <div class="faq-a">
+              母液：密封、避光、阴凉保存，避免高温暴晒。稀释液：建议现配现用，不建议长期存放；低温析出可回温（温水浴）溶解后再用，切勿明火加热。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q6 · 可用哪些水/酒精</div>
+            <div class="faq-a">
+              水：去离子水/蒸馏水/可靠纯净水（哇哈哈纯净水可用）。酒精：70–95% 均可用于快干、助渗与激活；不建议全酒精作为母液唯一稀释溶剂。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q7 · 用量怎么拿捏</div>
+            <div class="faq-a">
+              关键不是越湿越好，而是润而不滴、均匀渗透、不积液。经验：宁可两次薄涂，也不要一次浓涂堆盐结晶。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q8 · 兼容性与混用禁忌</div>
+            <div class="faq-a">
+              避免接触易被酸腐蚀的金属表面（如铝件、部分镀层）。请勿与漂白剂/含氯清洁剂、强碱或未知还原剂混合。建议使用玻璃/PP/PE 容器与滴管操作。
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="warning-box">
+          <span class="warning-icon">⚠️</span>
+          <h3 class="warning-title">安全警示 WARNING</h3>
+          <p class="warning-text">
+            本品含有强酸及贵金属成分，具有<b>强腐蚀性</b>。严禁接触皮肤或眼睛；如不慎接触，请立即用大量清水冲洗。<br>
+            建议佩戴手套与护目镜操作；激活步骤请在通风处进行。请密封保存于阴凉避光处，远离儿童。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        PURE PT SERIES | 怀炉触媒养护方案<br>
+        <span style="opacity:0.5; font-size:10px;">PRODUCT BATCH: 2026-铂金触媒液</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+  (() => {
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
+    const canvas = document.getElementById('burnerCanvas');
+    const ctx = canvas.getContext('2d', { alpha: true });
+
+    const CONF = {
+      maxDPR: 1.25,
+      scale: 0.55,
+      fps: 24,
+      cell: 55,
+      intensity: 1.20,
+      flicker: 0.65,
+      hotRate: 0.010,
+      hotLife: [1200, 2200],
+      smoke: 0.10
+    };
+
+    let dpr = 1, W = 0, H = 0, cw = 0, ch = 0;
+
+    function resize(){
+      dpr = Math.min(window.devicePixelRatio || 1, CONF.maxDPR);
+      W = Math.floor(window.innerWidth);
+      H = Math.floor(window.innerHeight);
+      cw = Math.floor(W * dpr * CONF.scale);
+      ch = Math.floor(H * dpr * CONF.scale);
+      canvas.width = cw;
+      canvas.height = ch;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+    }
+    window.addEventListener('resize', resize, { passive:true });
+    resize();
+
+    const fract = x => x - Math.floor(x);
+
+    function hash2(ix, iy){
+      const s = Math.sin(ix * 127.1 + iy * 311.7) * 43758.5453123;
+      return fract(s);
+    }
+
+    function lerp(a,b,t){ return a + (b-a)*t; }
+    function smooth(t){ return t*t*(3-2*t); }
+
+    function noise2(x, y){
+      const ix = Math.floor(x), fx = x - ix;
+      const iy = Math.floor(y), fy = y - iy;
+      const v00 = hash2(ix,   iy);
+      const v10 = hash2(ix+1, iy);
+      const v01 = hash2(ix,   iy+1);
+      const v11 = hash2(ix+1, iy+1);
+      const sx = smooth(fx), sy = smooth(fy);
+      const a = lerp(v00, v10, sx);
+      const b = lerp(v01, v11, sx);
+      return lerp(a, b, sy);
+    }
+
+    const hotSpots = [];
+    function rand(a,b){ return a + Math.random()*(b-a); }
+    function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+
+    function hexPath(cx, cy, r){
+      const a = Math.PI / 3;
+      ctx.beginPath();
+      for (let i=0;i<6;i++){
+        const x = cx + r * Math.cos(a*i + Math.PI/6);
+        const y = cy + r * Math.sin(a*i + Math.PI/6);
+        if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.closePath();
+    }
+
+    function colorFromI(i){
+      const t = clamp(i, 0, 1);
+      let r,g,b,a;
+      if (t < 0.55){
+        const k = t/0.55;
+        r = lerp(40, 210, k);
+        g = lerp(10, 85,  k);
+        b = lerp(10, 20,  k);
+        a = lerp(0.05, 0.45, k);
+      } else {
+        const k = (t-0.55)/0.45;
+        r = lerp(210, 255, k);
+        g = lerp(85,  205, k);
+        b = lerp(20,  120, k);
+        a = lerp(0.45, 0.78, k);
+      }
+      return `rgba(${r|0},${g|0},${b|0},${a})`;
+    }
+
+    function spawnHot(ts){
+      const count = (Math.random() < 0.35) ? 1 : 0;
+      for (let i=0;i<count;i++){
+        hotSpots.push({
+          x: rand(0, cw),
+          y: rand(ch*0.30, ch*0.92),
+          r: rand(40, 90),
+          born: ts,
+          life: rand(CONF.hotLife[0], CONF.hotLife[1])
+        });
+      }
+      while (hotSpots.length > 10) hotSpots.shift();
+    }
+
+    function hotField(x,y,ts){
+      let add = 0;
+      for (const h of hotSpots){
+        const age = ts - h.born;
+        if (age > h.life) continue;
+        const k = 1 - age / h.life;
+        const dx = x - h.x, dy = y - h.y;
+        const d2 = dx*dx + dy*dy;
+        const s2 = h.r*h.r;
+        add += Math.exp(-d2/(2*s2)) * (0.75*k);
+      }
+      return add;
+    }
+
+    let running = true;
+    document.addEventListener('visibilitychange', () => {
+      running = !document.hidden;
+    });
+
+    let last = 0;
+    const frameInterval = 1000 / CONF.fps;
+
+    function draw(ts){
+      if (!running){ requestAnimationFrame(draw); return; }
+      if (ts - last < frameInterval){ requestAnimationFrame(draw); return; }
+      last = ts;
+
+      ctx.clearRect(0,0,cw,ch);
+
+      if (CONF.smoke > 0){
+        const sm = CONF.smoke;
+        const gy = ctx.createLinearGradient(0, ch*0.35, 0, ch);
+        gy.addColorStop(0, `rgba(255,150,70,0.00)`);
+        gy.addColorStop(1, `rgba(255,150,70,${0.06*sm})`);
+        ctx.fillStyle = gy;
+        ctx.fillRect(0,0,cw,ch);
+      }
+
+      const r = CONF.cell * 0.52;
+      const stepX = CONF.cell;
+      const stepY = CONF.cell * 0.86;
+
+      const t1 = ts * 0.00022;
+      const t2 = ts * 0.00010;
+
+      const globalFlicker = 0.85 + CONF.flicker * 0.12 * Math.sin(ts*0.0014);
+
+      if (Math.random() < CONF.hotRate) spawnHot(ts);
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+
+      for (let y = -stepY; y < ch + stepY; y += stepY){
+        const row = Math.round(y / stepY);
+        const offsetX = (row % 2) ? stepX*0.5 : 0;
+
+        for (let x = -stepX; x < cw + stepX; x += stepX){
+          const cx = x + offsetX;
+          const cy = y;
+
+          const nx = cx / 120;
+          const ny = cy / 120;
+
+          const nA = noise2(nx + t1, ny + t2);
+          const nB = noise2(nx*1.7 - t2, ny*1.7 + t1);
+
+          let i = Math.pow(clamp(nA*0.7 + nB*0.3, 0, 1), 2.25);
+
+          const heatByY = clamp((cy/ch - 0.18) * 1.25, 0, 1);
+          i *= (0.35 + 0.65*heatByY);
+
+          i += hotField(cx, cy, ts) * 0.85;
+
+          i = clamp(i * CONF.intensity * globalFlicker, 0, 1);
+
+          if (i < 0.12) continue;
+
+          ctx.fillStyle = colorFromI(i);
+          hexPath(cx, cy, r);
+          ctx.fill();
+
+          if (i > 0.75){
+            ctx.globalAlpha = 0.55;
+            ctx.fillStyle = `rgba(255,230,170,${0.20 + 0.25*(i-0.75)})`;
+            hexPath(cx, cy, r*0.55);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+
+      ctx.restore();
+
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
+  })();
+  </script>
+</body>
+</html>
