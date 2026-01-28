@@ -235,8 +235,81 @@
     }
     .step-title{font-size:1.2rem;color:#fff;margin-bottom:10px;}
     .step-desc{color:var(--text-muted);font-size:0.95rem;}
-    .subline{color:#b0b0b0;font-size:0.92rem;margin-top:10px;}
-    .subline b{color:#fff;font-weight:600;}
+
+    /* --- 放置注意事项 Placement Notes --- */
+    .notice-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+      gap:18px;
+      margin-top:28px;
+    }
+    .notice-card{
+      background:rgba(20,20,20,0.86);
+      border:1px solid #222;
+      padding:22px 20px;
+      backdrop-filter:blur(2px);
+      box-shadow:0 10px 34px rgba(0,0,0,0.26);
+      position:relative;
+      overflow:hidden;
+    }
+    .notice-card::before{
+      content:"";
+      position:absolute; inset:-40% -20%;
+      background:radial-gradient(circle at 30% 30%, rgba(255,170,80,0.08), rgba(0,0,0,0) 55%);
+      opacity:0.9;
+      pointer-events:none;
+    }
+    .notice-title{
+      color:#fff;
+      font-size:1.05rem;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    .notice-tag{
+      display:inline-block;
+      font-size:0.78rem;
+      letter-spacing:1px;
+      color:rgba(229,228,226,0.9);
+      border:1px solid rgba(229,228,226,0.25);
+      padding:4px 10px;
+      border-radius:999px;
+      margin-bottom:12px;
+    }
+    .notice-list{
+      margin-top:6px;
+      color:var(--text-muted);
+      font-size:0.92rem;
+    }
+    .notice-list li{
+      margin:8px 0;
+      padding-left:18px;
+      position:relative;
+    }
+    .notice-list li::before{
+      content:"•";
+      position:absolute;
+      left:0;
+      top:0;
+      color:rgba(229,228,226,0.75);
+    }
+    .notice-strong{
+      color:#e8e8e8;
+      font-weight:600;
+    }
+    .notice-warn{
+      color:rgba(255,77,77,0.95);
+      font-weight:700;
+    }
+    .notice-tip{
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid rgba(255,170,80,0.20);
+      background:rgba(255,170,80,0.05);
+      color:#bdbdbd;
+      border-radius:12px;
+      font-size:0.9rem;
+    }
 
     .faq-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:30px;}
     .faq-item{
@@ -362,7 +435,7 @@
             </div>
           </div>
 
-          <div class="step-item">
+          <div class="step-item" style="margin-bottom:0;">
             <div class="step-number">03</div>
             <div class="step-content">
               <h3 class="step-title">高温激活 (Activation)</h3>
@@ -379,75 +452,46 @@
       </div>
     </section>
 
+    <!-- 放置注意事项：修复 & 全新制作 -->
     <section class="section">
       <div class="container">
-        <h2 style="text-align:center; margin-bottom:60px;">NEW CATALYST BUILD</h2>
+        <h2 style="text-align:center; margin-bottom:20px;">PLACEMENT NOTES</h2>
         <p class="desc" style="text-align:center;">
-          本段为<b>全新制作触媒</b>流程（从零制备新棉头/新载体）。修复 = 给旧触媒补铂；制作 = 从<b>载体处理 → 上铂浸渍 → 干燥 → 激活</b>完整建立催化层。
+          以下为<b>修复旧触媒</b>与<b>全新制作触媒</b>时，“棉头/载体在滴加后如何放置”的关键注意事项。
+          这一步做对了，能显著减少<b>结晶、表面硬壳、外干内湿、激活失败</b>等问题。
         </p>
 
-        <div class="steps-wrapper">
+        <div class="notice-grid">
 
-          <div class="step-item">
-            <div class="step-number">A1</div>
-            <div class="step-content">
-              <h3 class="step-title">载体选择 (Carrier)</h3>
-              <p class="step-desc">
-                推荐：<b>莫来石氧化铝纤维棉 / 陶瓷棉</b>或稳定耐温的多孔陶瓷载体。要求：无油、无胶、无明显粉尘团；避免后续点火难、异味大、活性不稳。
-              </p>
+          <div class="notice-card">
+            <div class="notice-tag">FOR REPAIR</div>
+            <div class="notice-title">修复旧触媒 · 放置要点</div>
+            <ul class="notice-list">
+              <li><span class="notice-strong">放置姿态：</span>建议<b>平放</b>在惰性托盘上（玻璃/瓷盘/PP/PE），避免液体向一侧“跑偏”造成分布不均。</li>
+              <li><span class="notice-strong">避免接触：</span>棉头<b>不要直接接触金属</b>（尤其铝件/镀层件），防止被酸腐蚀或污染催化层。</li>
+              <li><span class="notice-strong">通风干燥：</span>放在<b>阴凉通风处</b>，让水分自然蒸发；如环境湿冷，建议 40–60℃ 低温烘干到完全干燥。</li>
+              <li><span class="notice-strong">防尘但不闷：</span>可用<b>透气罩</b>（纱网/滤纸罩）防落灰，但<b>不要密封闷住</b>，否则易外干内湿。</li>
+              <li><span class="notice-warn">严禁：</span>未干透直接激活、靠近明火长时间烘烤、一次滴加过量堆积在表面。</li>
+            </ul>
+
+            <div class="notice-tip">
+              建议：修复更稳的做法是<b>两轮薄涂</b>（先 1:3 打底 → 完全干燥 → 再少量补涂），通常优于一次上浓。
             </div>
           </div>
 
-          <div class="step-item">
-            <div class="step-number">A2</div>
-            <div class="step-content">
-              <h3 class="step-title">预处理与干燥 (Pre-clean & Dry)</h3>
-              <p class="step-desc">
-                若载体有粉尘：可用<b>纯净水</b>快速漂洗后轻压沥干；随后通风自然风干，或 <span class="highlight">40–80℃</span> 低温烘干至<b>完全干燥</b>。<br><br>
-                全新制作最怕“湿着激活”或“带油/带胶”：会导致飞溅、味道大、表面结晶、甚至活性层不牢。
-              </p>
-            </div>
-          </div>
+          <div class="notice-card">
+            <div class="notice-tag">FOR NEW BUILD</div>
+            <div class="notice-title">全新制作触媒 · 放置要点</div>
+            <ul class="notice-list">
+              <li><span class="notice-strong">第一原则：</span>全新载体滴加后更容易“表面先干、内部未干”，必须<b>延长干燥时间</b>，避免后续激活飞溅与异味。</li>
+              <li><span class="notice-strong">层间干燥：</span>推荐<b>分轮上铂</b>：第 1 轮薄涂 → 完全干燥 → 第 2 轮补涂 → 再干燥，再进入激活。</li>
+              <li><span class="notice-strong">摆放承托：</span>载体下面垫<b>惰性材料</b>（玻璃/瓷/PP/PE），不要用纸巾直接垫底（纸会吸走溶液导致负载不均）。</li>
+              <li><span class="notice-strong">避免“积液池”：</span>放置时不要让边缘形成低洼积液，必要时轻轻调整姿态，让溶液<b>均匀分布</b>而不是堆在某个角。</li>
+              <li><span class="notice-warn">严禁：</span>湿着激活、用全酒精长期浸泡、密封闷干（会导致结晶/硬壳/活性层不牢）。</li>
+            </ul>
 
-          <div class="step-item">
-            <div class="step-number">A3</div>
-            <div class="step-content">
-              <h3 class="step-title">浸渍液配制 (Impregnation Mix)</h3>
-              <p class="step-desc">
-                稀释水：去离子水/蒸馏水/可靠纯净水（<b>哇哈哈纯净水可用</b>）。全新触媒建议从 <span class="highlight">1:3</span> 打底开始建立均匀基础层；必要时再做第二轮补浸到 1:2。<br><br>
-                若需快干/助渗：可选水+酒精（先配 <b>水:酒精≈7:3</b>），再按 1:3 或 1:2 稀释母液；不建议全酒精。
-              </p>
-            </div>
-          </div>
-
-          <div class="step-item">
-            <div class="step-number">A4</div>
-            <div class="step-content">
-              <h3 class="step-title">上铂浸渍 (Load Pt)</h3>
-              <p class="step-desc">
-                采用<b>少量多次</b>滴加/浸润，目标状态为：<b>完全浸润但不积液（润而不滴）</b>。建议至少完成 <span class="highlight">2 轮</span>：第 1 轮 1:3 打底 → 完全干燥；第 2 轮按状态补浸（1:3 或 1:2）→ 再干燥。颜色可为淡黄/黄褐/金黄，关键是<b>均匀渗透</b>与<b>不过量</b>。
-              </p>
-            </div>
-          </div>
-
-          <div class="step-item">
-            <div class="step-number">A5</div>
-            <div class="step-content">
-              <h3 class="step-title">完全干燥 (Full Dry)</h3>
-              <p class="step-desc">
-                浸渍后必须<b>完全干燥</b>再激活。推荐通风自然干燥或 <span class="highlight">40–60℃</span> 低温烘干至无潮感。湿冷环境建议延长干燥时间，避免“外干内湿”。
-              </p>
-            </div>
-          </div>
-
-          <div class="step-item" style="margin-bottom:0;">
-            <div class="step-number">A6</div>
-            <div class="step-content">
-              <h3 class="step-title">激活（双方式）(Activation)</h3>
-              <p class="step-desc">
-                方式 A：滴入<b>极少量</b>酒精，点燃后<b>仅让燃料自然燃尽</b>；方式 B：<b>离火烘烤激活</b>（保持 <span class="highlight">2–5 cm</span> 距离均匀加热）。<br><br>
-                判定：颜色由黄/黄褐转为<b>灰黑色催化态</b>（允许略不均匀）即完成。新手优先方式 B，更稳更可控。
-              </p>
+            <div class="notice-tip">
+              新手建议：全新制作优先从 <b>1:3</b> 建立均匀底层；等点火稳定后，再考虑用 <b>1:2</b> 做加强层。
             </div>
           </div>
 
