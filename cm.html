@@ -3,796 +3,572 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Platinum catalyst solution | 铂金触媒液</title>
-
+  <title>Premium Catalyst Solutions | 怀炉触媒液使用手册</title>
   <style>
-    :root{
-      --bg-color:#0a0a0a;
-      --card-bg:#141414;
-      --text-main:#e0e0e0;
-      --text-muted:#888888;
-      --accent-platinum:#E5E4E2;
-      --danger-red:#ff4d4d;
-      --font-main:'Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{
-      background:var(--bg-color);
-      color:var(--text-main);
-      font-family:var(--font-main);
-      line-height:1.6;
-      overflow-x:hidden;
-      min-height:100vh;
-    }
-    a{color:inherit;text-decoration:none;}
-    ul{list-style:none;}
+    :root {
+      /* --- 核心配色 --- */
+      --bg-deep: #050505;
+      --card-bg: rgba(30, 30, 30, 0.45);
+      --border-light: rgba(255, 255, 255, 0.08);
+      
+      --pt-main: #b8d4ff; /* 冰蓝 */
+      --pt-glow: rgba(100, 160, 255, 0.3);
+      
+      --pd-main: #ffcf87; /* 金橙 */
+      --pd-glow: rgba(255, 160, 60, 0.3);
 
-    .fx-bg{
-      position:fixed; inset:0;
-      z-index:0;
-      pointer-events:none;
-      background:
-        radial-gradient(1200px 700px at 50% 35%, rgba(255,170,80,0.05), rgba(0,0,0,0) 60%),
-        radial-gradient(900px 650px at 20% 80%, rgba(255,255,255,0.02), rgba(0,0,0,0) 60%),
-        radial-gradient(900px 650px at 80% 80%, rgba(255,255,255,0.02), rgba(0,0,0,0) 60%),
-        linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.78) 45%, rgba(0,0,0,0.92) 100%);
-    }
-    #burnerCanvas{
-      width:100%;
-      height:100%;
-      display:block;
-      filter: blur(1.6px) saturate(1.18) brightness(0.92);
-      opacity: 0.95;
-    }
-    .fx-vignette{
-      position:absolute; inset:0;
-      background:
-        radial-gradient(1200px 700px at 50% 28%, rgba(229,228,226,0.08), rgba(0,0,0,0) 55%),
-        radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.58) 78%, rgba(0,0,0,0.86) 100%),
-        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72));
-      opacity:0.78;
-      pointer-events:none;
+      --gold-star: #ffc107; /* 统一金黄星色 */
+      --danger: #ff5c5c;
+      --nav-height: 60px;
     }
 
-    .page{position:relative; z-index:1;}
-
-    @media (prefers-reduced-motion: reduce){
-      .fx-bg{display:none;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background-color: var(--bg-deep);
+      color: #e0e0e0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
     }
 
-    .container{max-width:800px;margin:0 auto;padding:0 20px;}
-    h1,h2,h3{font-weight:300;letter-spacing:2px;text-transform:uppercase;}
-    .gradient-text{
-      background:linear-gradient(135deg,#fff 0%,#777 50%,#fff 100%);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      font-weight:700;
-    }
-    .highlight{color:var(--accent-platinum);font-weight:bold;text-shadow:0 0 16px rgba(229,228,226,0.10);}
-
-    header{
-      height:90vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      position:relative;
-      background: radial-gradient(circle at center, rgba(26,26,26,0.72) 0%, rgba(0,0,0,0.86) 70%, rgba(0,0,0,0.95) 100%);
-      overflow:hidden;
-    }
-    header::before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(900px 600px at 50% 35%, rgba(229,228,226,0.08), rgba(0,0,0,0) 60%),
-        linear-gradient(180deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.72) 100%);
-      pointer-events:none;
-    }
-    header > .container{position:relative;z-index:2;}
-
-    .brand-logo{
-      font-size:1.2rem;
-      letter-spacing:5px;
-      margin-bottom:20px;
-      color:var(--text-muted);
-      border:1px solid rgba(136,136,136,0.8);
-      padding:7px 16px;
-      display:inline-block;
-      position:relative;
-      overflow:hidden;
-      backdrop-filter:blur(2px);
-      box-shadow:0 10px 30px rgba(0,0,0,0.22);
-    }
-    .brand-logo::before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(circle at 12% 30%, rgba(255,255,255,0.08), rgba(255,255,255,0) 32%),
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), rgba(255,255,255,0) 34%),
-        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
-      opacity:0.18;
-      pointer-events:none;
-    }
-    .brand-logo::after{
-      content:"";
-      position:absolute;
-      top:-40%;
-      left:-80%;
-      width:60%;
-      height:180%;
-      background: linear-gradient(115deg,
-        rgba(255,255,255,0) 0%,
-        rgba(229,228,226,0.08) 32%,
-        rgba(229,228,226,0.55) 45%,
-        rgba(229,228,226,0.08) 58%,
-        rgba(255,255,255,0) 100%);
-      mix-blend-mode:screen;
-      opacity:0.9;
-      animation:metalSweep 4.8s ease-in-out infinite;
-    }
-    @keyframes metalSweep{
-      0%{transform:translateX(-10%);opacity:0;}
-      12%{opacity:0.95;}
-      38%{transform:translateX(260%);opacity:0.90;}
-      48%{opacity:0;}
-      100%{transform:translateX(260%);opacity:0;}
+    /* =========================================
+       1. 全局呼吸光影系统 (无缝背景)
+       ========================================= */
+    .ambient-light {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      z-index: -1; pointer-events: none; overflow: hidden;
     }
 
-    h1{
-      font-size:3.5rem;
-      margin-bottom:10px;
-      line-height:1.1;
-      text-shadow:0 0 18px rgba(229,228,226,0.10);
-    }
-    .subtitle{
-      font-size:1.2rem;
-      color:var(--text-muted);
-      max-width:600px;
-      margin-top:20px;
-    }
-    .scroll-down{
-      position:absolute;
-      bottom:40px;
-      font-size:0.8rem;
-      color:var(--text-muted);
-      animation:bounce 2s infinite;
-      z-index:2;
-    }
-    @keyframes bounce{
-      0%,20%,50%,80%,100%{transform:translateY(0);}
-      40%{transform:translateY(-10px);}
-      60%{transform:translateY(-5px);}
+    .light-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); opacity: 0.4;
+      animation: breathe 8s infinite ease-in-out alternate;
+      mix-blend-mode: screen;
     }
 
-    .section{
-      padding:80px 0;
-      border-bottom:1px solid #222;
-      position:relative;
-    }
-    .section::before{
-      content:"";
-      position:absolute; inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.78));
-      opacity:0.26;
-      pointer-events:none;
-    }
-    .section > .container{position:relative;z-index:1;}
+    /* 顶部冷光源 */
+    .blob-cold-1 { top: -10%; left: 20%; width: 60vw; height: 60vw; background: radial-gradient(circle, #2a5a8a, transparent); animation-duration: 10s; }
+    .blob-cold-2 { top: 20%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, #1a3c6e, transparent); animation-delay: -2s; }
 
-    .philosophy{text-align:center;}
-    .quote{
-      font-size:1.5rem;
-      font-style:italic;
-      color:var(--accent-platinum);
-      margin-bottom:30px;
-      opacity:0.9;
-      text-shadow:0 0 22px rgba(229,228,226,0.10);
-    }
-    .desc{color:var(--text-muted);max-width:720px;margin:0 auto;}
+    /* 底部暖光源 */
+    .blob-warm-1 { bottom: -10%; left: -10%; width: 70vw; height: 70vw; background: radial-gradient(circle, #8a4a1b, transparent); animation-duration: 12s; }
+    .blob-warm-2 { bottom: 20%; right: 10%; width: 40vw; height: 40vw; background: radial-gradient(circle, #6e3a1a, transparent); animation-delay: -4s; }
 
-    .features-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
-      gap:30px;
-      margin-top:50px;
-    }
-    .feature-card{
-      background:rgba(20,20,20,0.86);
-      padding:30px;
-      border:1px solid #222;
-      transition:0.3s;
-      box-shadow:0 10px 34px rgba(0,0,0,0.30);
-      backdrop-filter:blur(2px);
-    }
-    .feature-card:hover{
-      border-color:rgba(136,136,136,0.9);
-      transform:translateY(-5px);
-    }
-    .icon{
-      font-size:2rem;
-      margin-bottom:20px;
-      color:var(--accent-platinum);
-      filter:drop-shadow(0 0 10px rgba(229,228,226,0.12));
-    }
-    .feature-title{font-size:1.1rem;margin-bottom:10px;color:#fff;}
-    .feature-text{font-size:0.9rem;color:var(--text-muted);}
-
-    .steps-wrapper{position:relative;margin-top:50px;}
-    .step-item{display:flex;margin-bottom:60px;position:relative;}
-    .step-number{
-      font-size:4rem;
-      font-weight:700;
-      color:#1a1a1a;
-      position:absolute;
-      left:-20px;
-      top:-20px;
-      z-index:-1;
-    }
-    .step-content{
-      border-left:2px solid var(--accent-platinum);
-      padding-left:30px;
-      margin-left:20px;
-    }
-    .step-title{font-size:1.2rem;color:#fff;margin-bottom:10px;}
-    .step-desc{color:var(--text-muted);font-size:0.95rem;}
-
-    /* --- 放置注意事项 Placement Notes --- */
-    .notice-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-      gap:18px;
-      margin-top:28px;
-    }
-    .notice-card{
-      background:rgba(20,20,20,0.86);
-      border:1px solid #222;
-      padding:22px 20px;
-      backdrop-filter:blur(2px);
-      box-shadow:0 10px 34px rgba(0,0,0,0.26);
-      position:relative;
-      overflow:hidden;
-    }
-    .notice-card::before{
-      content:"";
-      position:absolute; inset:-40% -20%;
-      background:radial-gradient(circle at 30% 30%, rgba(255,170,80,0.08), rgba(0,0,0,0) 55%);
-      opacity:0.9;
-      pointer-events:none;
-    }
-    .notice-title{
-      color:#fff;
-      font-size:1.05rem;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      margin-bottom:10px;
-    }
-    .notice-tag{
-      display:inline-block;
-      font-size:0.78rem;
-      letter-spacing:1px;
-      color:rgba(229,228,226,0.9);
-      border:1px solid rgba(229,228,226,0.25);
-      padding:4px 10px;
-      border-radius:999px;
-      margin-bottom:12px;
-    }
-    .notice-list{
-      margin-top:6px;
-      color:var(--text-muted);
-      font-size:0.92rem;
-    }
-    .notice-list li{
-      margin:8px 0;
-      padding-left:18px;
-      position:relative;
-    }
-    .notice-list li::before{
-      content:"•";
-      position:absolute;
-      left:0;
-      top:0;
-      color:rgba(229,228,226,0.75);
-    }
-    .notice-strong{
-      color:#e8e8e8;
-      font-weight:600;
-    }
-    .notice-warn{
-      color:rgba(255,77,77,0.95);
-      font-weight:700;
-    }
-    .notice-tip{
-      margin-top:14px;
-      padding:12px 14px;
-      border:1px solid rgba(255,170,80,0.20);
-      background:rgba(255,170,80,0.05);
-      color:#bdbdbd;
-      border-radius:12px;
-      font-size:0.9rem;
+    @keyframes breathe {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+      50% { opacity: 0.5; }
+      100% { transform: scale(1.1) translate(20px, -20px); opacity: 0.25; }
     }
 
-    .faq-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:30px;}
-    .faq-item{
-      background:rgba(20,20,20,0.86);
-      border:1px solid #222;
-      padding:18px;
-      backdrop-filter:blur(2px);
-      box-shadow:0 10px 34px rgba(0,0,0,0.26);
-    }
-    .faq-q{color:#fff;font-size:0.98rem;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;}
-    .faq-a{color:var(--text-muted);font-size:0.92rem;}
-
-    .warning-box{
-      background:rgba(20,0,0,0.50);
-      border:1px solid #440000;
-      padding:40px;
-      text-align:center;
-      margin-top:20px;
-      backdrop-filter:blur(2px);
-      box-shadow:0 10px 34px rgba(0,0,0,0.30);
-    }
-    .warning-icon{
-      color:var(--danger-red);
-      font-size:3rem;
-      margin-bottom:20px;
-      display:block;
-      filter:drop-shadow(0 0 10px rgba(255,77,77,0.18));
-    }
-    .warning-title{color:var(--danger-red);margin-bottom:15px;}
-    .warning-text{color:#aaa;font-size:0.9rem;}
-
-    footer{
-      padding:40px 0;
-      text-align:center;
-      color:#444;
-      font-size:0.8rem;
-      letter-spacing:1px;
-      position:relative;
+    /* 噪点纹理 */
+    .noise-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
-    @media (max-width:600px){
-      h1{font-size:2.5rem;}
-      .section{padding:50px 0;}
-      .brand-logo{font-size:1.05rem;}
+    /* =========================================
+       2. 导航与布局
+       ========================================= */
+    nav {
+      position: fixed; top: 0; width: 100%; height: var(--nav-height);
+      background: rgba(5,5,5,0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light); z-index: 100;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .nav-links a {
+      color: #999; text-decoration: none; margin: 0 20px; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+    }
+    .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+    .wrapper { position: relative; z-index: 1; margin-top: var(--nav-height); }
+    .section { padding: 120px 0; position: relative; } /* 无背景色，靠全局光影 */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    h1, h2, h3, h4 { text-transform: uppercase; letter-spacing: 1px; font-weight: 300; color: #fff; }
+    
+    .header-box { text-align: center; margin-bottom: 80px; }
+    .tag { 
+      font-size: 0.75rem; letter-spacing: 3px; padding: 6px 14px; 
+      border: 1px solid var(--border-light); display: inline-block; margin-bottom: 20px; 
+      color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.3);
+    }
+    .title-xl { font-size: 4rem; line-height: 1; margin-bottom: 20px; letter-spacing: 2px; }
+    .subtitle { font-size: 1.1rem; color: #999; max-width: 700px; margin: 0 auto; }
+    .quote { font-size: 1.4rem; font-style: italic; margin-top: 30px; opacity: 0.9; }
+
+    /* 通用卡片 (毛玻璃增强) */
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border-light);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      padding: 35px; transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
+      border-radius: 6px;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .icon { font-size: 2.2rem; margin-bottom: 15px; display: block; }
+    
+    .text-muted { color: #aaa; font-size: 0.95rem; }
+    ul.list-check { list-style: none; padding-left: 10px; }
+    ul.list-check li { position: relative; padding-left: 20px; margin-bottom: 10px; color: #bbb; font-size: 0.9rem; }
+    ul.list-check li::before { content: "•"; position: absolute; left: 0; color: #666; }
+    .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    .warn-text { color: var(--danger); font-weight: bold; }
+
+    /* =========================================
+       ⭐ 统一金黄星星 ⭐
+       ========================================= */
+    .star {
+      color: var(--gold-star);
+      text-shadow: 0 0 12px rgba(255, 193, 7, 0.5);
+      font-size: 1.1rem; letter-spacing: 2px;
+    }
+
+    /* =========================================
+       主题定制 (Pt vs Pd)
+       ========================================= */
+    /* 纯铂 */
+    .pt-grad-text {
+      background: linear-gradient(135deg, #fff, #a3c9ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px var(--pt-glow));
+    }
+    .pt-theme .icon { color: var(--pt-main); text-shadow: 0 0 15px var(--pt-glow); }
+    .pt-theme .step-num { color: rgba(184, 212, 255, 0.08); }
+    .pt-theme .step-content { border-left: 2px solid var(--pt-main); }
+    .pt-theme .card:hover { border-color: var(--pt-main); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+    /* 铂钯 */
+    .pd-grad-text {
+      background: linear-gradient(135deg, #fff, #ffcf87); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px var(--pd-glow));
+    }
+    .pd-theme .icon { color: var(--pd-main); text-shadow: 0 0 15px var(--pd-glow); }
+    .pd-theme .step-num { color: rgba(255, 207, 135, 0.08); }
+    .pd-theme .step-content { border-left: 2px solid var(--pd-main); }
+    .pd-theme .card:hover { border-color: var(--pd-main); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+    /* 步骤条 */
+    .steps-box { margin-top: 80px; }
+    .step-item { display: flex; margin-bottom: 60px; position: relative; }
+    .step-num {
+      position: absolute; left: -25px; top: -25px; font-size: 5rem; font-weight: 800; 
+      line-height: 1; font-family: impact, sans-serif; z-index: -1; pointer-events: none;
+    }
+    .step-content { padding-left: 25px; position: relative; z-index: 1; }
+    .step-title { font-size: 1.3rem; margin-bottom: 15px; }
+
+    /* FAQ & 注意事项 */
+    .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 40px; }
+    .faq-item { background: rgba(0,0,0,0.25); padding: 25px; border: 1px solid var(--border-light); transition: 0.3s; }
+    .faq-item:hover { background: rgba(255,255,255,0.05); }
+    .faq-q { color: #fff; display: block; margin-bottom: 8px; font-size: 1rem; font-weight: 600; }
+    .faq-a { color: #999; font-size: 0.95rem; line-height: 1.6; }
+
+    .notice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; }
+    .notice-head { font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; margin-bottom: 20px; color: #fff; font-weight: bold; }
+    .notice-tip { margin-top: 20px; padding: 15px; background: rgba(255, 193, 7, 0.05); border-left: 3px solid var(--gold-star); font-size: 0.9rem; color: #ccc; }
+
+    /* 对比表 */
+    .comp-table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+    .comp-table td { border-bottom: 1px solid var(--border-light); padding: 18px 10px; color: #aaa; font-size: 0.95rem; }
+    .comp-table th { text-align: left; color: #666; padding: 10px 10px; font-size: 0.8rem; text-transform: uppercase; }
+    .val-hi { color: #fff; font-weight: bold; }
+
+    .warning-box {
+      margin: 60px auto; max-width: 800px; text-align: center; padding: 50px;
+      border: 1px solid rgba(255, 92, 92, 0.4); background: rgba(50, 0, 0, 0.4);
+      border-radius: 8px;
+    }
+
+    /* =========================================
+       3. 新增：购买二维码专区 (Buy Section)
+       ========================================= */
+    .buy-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      max-width: 800px; margin: 0 auto;
+    }
+    .card-buy {
+      text-align: center; padding: 50px 30px;
+      border-top-width: 4px;
+      position: relative; overflow: hidden;
+    }
+    .qr-container {
+      width: 180px; height: 180px; margin: 25px auto;
+      background: #fff; padding: 10px; border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .qr-img {
+      width: 100%; height: 100%; object-fit: contain;
+      image-rendering: pixelated; /* 保持二维码清晰 */
+    }
+    .buy-title { font-size: 1.5rem; margin-bottom: 5px; color: #fff; }
+    .buy-desc { color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+    .buy-btn {
+      display: inline-block; padding: 10px 24px; border-radius: 50px;
+      font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;
+      margin-top: 15px; color: #000; text-transform: uppercase;
+    }
+    
+    /* 纯铂购买卡片 */
+    .pt-buy-card { border-top-color: var(--pt-main); }
+    .pt-buy-card:hover { box-shadow: 0 0 30px rgba(184, 212, 255, 0.15); }
+    .pt-buy-card .buy-btn { background: var(--pt-main); }
+    
+    /* 铂钯购买卡片 */
+    .pd-buy-card { border-top-color: var(--pd-main); }
+    .pd-buy-card:hover { box-shadow: 0 0 30px rgba(255, 207, 135, 0.15); }
+    .pd-buy-card .buy-btn { background: var(--pd-main); }
+
+    @media (max-width: 700px) {
+      .buy-grid { grid-template-columns: 1fr; gap: 30px; }
+    }
+
+    footer {
+      text-align: center; padding: 80px; background: #000; font-size: 0.8rem; color: #444;
+      border-top: 1px solid var(--border-light);
+    }
+
+    @media (max-width: 768px) {
+      .title-xl { font-size: 3rem; }
+      .nav-links { display: none; }
+      nav { justify-content: center; font-size: 0.9rem; letter-spacing: 2px; color: #888; }
+      nav::after { content: "CATALYST MANUAL"; }
+      .faq-grid, .notice-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-
 <body>
-  <div class="fx-bg" aria-hidden="true">
-    <canvas id="burnerCanvas"></canvas>
-    <div class="fx-vignette"></div>
+
+  <div class="ambient-light">
+    <div class="light-blob blob-cold-1"></div>
+    <div class="light-blob blob-cold-2"></div>
+    <div class="light-blob blob-warm-1"></div>
+    <div class="light-blob blob-warm-2"></div>
   </div>
+  
+  <div class="noise-layer"></div>
 
-  <div class="page">
-    <header>
+  <nav>
+    <div class="nav-links">
+      <a href="#pt">PURE PT (纯铂触媒液)</a>
+      <a href="#pd">PT-PD (铂钯触媒液)</a>
+      <a href="#comp">选型对比</a>
+      <a href="#buy" style="color:#fff; border-bottom:1px solid #fff;">购买 / BUY</a>
+    </div>
+  </nav>
+
+  <div class="wrapper">
+
+    <div id="pt" class="section pt-theme">
       <div class="container">
-        <div class="brand-logo">PREMIUM CATALYST</div>
-        <h1>PURE <span class="gradient-text">PT</span></h1>
-        <p class="subtitle">纯铂触媒液 · 专为极致冷启动而生</p>
-      </div>
-      <div class="scroll-down">向下滑动探索</div>
-    </header>
+        <div class="header-box">
+          <span class="tag">PREMIUM CATALYST</span>
+          <h1 class="title-xl">PURE <span class="pt-grad-text">PT</span></h1>
+          <p class="subtitle">纯铂触媒液 · 专为极致冷启动而生</p>
+          <p class="quote" style="color:var(--pt-main)">“不只是修复，更是性能的进化。”</p>
+        </div>
 
-    <section class="section">
-      <div class="container philosophy">
-        <p class="quote">“不只是修复，更是性能的进化。”</p>
-        <p class="desc">
-          摒弃传统钯混合方案，我们采用了极高成本的<b>纯铂 (Pure Platinum)</b> 配方。
-          纳米级离子分散工艺，赋予您的怀炉前所未有的<b>零秒响应</b>能力。
-        </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2 style="text-align:center; margin-bottom:40px;">CORE FEATURES</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="icon">⚡</div>
-            <h3 class="feature-title">极速冷启</h3>
-            <p class="feature-text">纯铂特有的高活性表面能，无需明火预热太久，遇气即燃，告别反复打火。</p>
+        <div class="grid-3">
+          <div class="card">
+            <span class="icon">⚡</span>
+            <h3>极速冷启</h3>
+            <p class="text-muted">纯铂特有的高活性表面能，无需明火预热太久，遇气即燃，告别反复打火。</p>
           </div>
-          <div class="feature-card">
-            <div class="icon">💎</div>
-            <h3 class="feature-title">纯铂工艺</h3>
-            <p class="feature-text">拒绝廉价填料。100% 高纯度氯铂酸盐母液，还原后形成致密铂黑层。</p>
+          <div class="card">
+            <span class="icon">💎</span>
+            <h3>纯铂工艺</h3>
+            <p class="text-muted">拒绝廉价填料。100% 高纯度氯铂酸盐母液，还原后形成致密铂黑层。</p>
           </div>
-          <div class="feature-card">
-            <div class="icon">🧬</div>
-            <h3 class="feature-title">深度渗透</h3>
-            <p class="feature-text">特调表面张力载体，瞬间穿透加厚陶瓷棉，由内而外建立立体催化网。</p>
+          <div class="card">
+            <span class="icon">🧬</span>
+            <h3>深度渗透</h3>
+            <p class="text-muted">特调表面张力载体，瞬间穿透加厚陶瓷棉，由内而外建立立体催化网。</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <h2 style="text-align:center; margin-bottom:60px;">USER MANUAL</h2>
-        <div class="steps-wrapper">
-
+        <div class="steps-box">
+          <h2 style="text-align:center; margin-bottom:50px;">纯铂 · 详细操作指南</h2>
+          
           <div class="step-item">
-            <div class="step-number">01</div>
+            <div class="step-num">01</div>
             <div class="step-content">
               <h3 class="step-title">稀释与预备 (Preparation)</h3>
-              <p class="step-desc">
+              <p class="text-muted">
                 本品为<b>高浓缩母液</b>。请使用<b>纯净水</b>按 <span class="highlight">1:2</span> 或 <span class="highlight">1:3</span> 比例稀释（例如：1ml 母液 + 2ml 纯水）。<br><br>
-                稀释介质建议：去离子水 / 蒸馏水 / 可靠品牌纯净水（<b>哇哈哈纯净水可用</b>）。可选“水+酒精”用于快干与助渗：建议先配 <b>水:酒精≈7:3</b>，再按 1:2 或 1:3 稀释母液。<b>不建议全酒精稀释母液</b>，容易干得太快导致结晶、渗透不足。<br><br>
-                配比建议：<b>1:3</b>（新手优先/日常保养/新棉试涂，更稳更不易结晶），<b>1:2</b>（老棉再生/冷启动明显变差，更强但更要求少量多次）。原则：<b>先稀后浓、分两次补涂</b>通常优于一次上浓。
+                <b>水质建议：</b>去离子水、蒸馏水或可靠品牌的纯净水（<b>哇哈哈纯净水可用</b>）。<br>
+                <b>酒精助渗：</b>可选“水+酒精”用于快干与助渗。建议先配 <b>水:酒精≈7:3</b>，再按 1:2 或 1:3 稀释母液。<span class="warn-text">不建议全酒精稀释母液</span>，容易干得太快导致结晶、渗透不足。<br><br>
+                <b>配比建议：</b><br>
+                - <b>1:3</b>（推荐）：新手优先/日常保养/新棉试涂，更稳更不易结晶。<br>
+                - <b>1:2</b>（救急）：老棉再生/冷启动明显变差，更强但更要求少量多次。原则：<b>先稀后浓</b>。
               </p>
             </div>
           </div>
 
           <div class="step-item">
-            <div class="step-number">02</div>
+            <div class="step-num">02</div>
             <div class="step-content">
               <h3 class="step-title">滴加浸润 (Infiltration)</h3>
-              <p class="step-desc">
+              <p class="text-muted">
                 将稀释后的液体均匀滴在棉头上，直至棉头完全湿润且颜色分布均匀（呈金黄色/黄褐均可）。随后置于阴凉处<b>自然风干</b>，直至水分完全蒸发。<br><br>
-                用量手法：建议<b>少量多次</b>滴加，目标是<b>润而不滴</b>（不应出现明显积液）。干燥后若出现白色/硬壳结晶：多为浓度偏高或干燥过快，可降低到 1:3 并减少酒精比例。
+                <b>用量手法：</b>建议<b>少量多次</b>滴加，目标是<b>润而不滴</b>（不应出现明显积液）。<br>
+                若干燥后出现白色/硬壳结晶：多为浓度偏高或干燥过快，可降低到 1:3 并减少酒精比例。
               </p>
             </div>
           </div>
 
-          <div class="step-item" style="margin-bottom:0;">
-            <div class="step-number">03</div>
+          <div class="step-item">
+            <div class="step-num">03</div>
             <div class="step-content">
               <h3 class="step-title">高温激活 (Activation)</h3>
-              <p class="step-desc">
-                这是最关键的一步，务必在<b>完全干燥</b>后进行。推荐以下任一方式：<br>
-                方式 A：在干燥棉头表面滴入<b>极少量</b>酒精，点燃后<b>仅让燃料自然燃尽</b>；<br>
-                方式 B：<b>离火烘烤激活</b>：火焰不直接接触棉头，保持 <span class="highlight">2–5 cm</span> 距离均匀加热，使其逐步完成还原激活。<br><br>
-                判定标准：棉头颜色由黄/黄褐转为<b>灰黑色催化态</b>（允许略不均匀）即代表激活成功。新手更建议优先方式 B（更温和可控，结晶与烧伤风险更低）。
+              <p class="text-muted">
+                务必在<b>完全干燥</b>后进行。推荐以下方式：<br>
+                <b>方式 A：</b>在干燥棉头表面滴入极少量酒精，点燃后仅让燃料自然燃尽。<br>
+                <b>方式 B（推荐）：</b>离火烘烤激活。火焰不直接接触棉头，保持 2–5 cm 距离均匀加热。<br><br>
+                <b>判定标准：</b>棉头颜色由黄/黄褐转为<b>灰黑色催化态</b>（允许略不均匀）即代表激活成功。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:80px;">
+          <h2 style="text-align:center; margin-bottom:40px;">放置要点 (Placement Notes)</h2>
+          <div class="notice-grid">
+            <div class="card">
+              <div class="notice-head">FOR REPAIR (修复旧触媒)</div>
+              <ul class="list-check">
+                <li><b style="color:#fff">放置姿态：</b>平放在惰性托盘上（玻璃/瓷盘/PP/PE），避免液体单侧积聚。</li>
+                <li><b style="color:#fff">避免接触：</b>棉头<b>不要直接接触金属</b>（尤其铝件/镀层件），防止被酸腐蚀。</li>
+                <li><b style="color:#fff">通风干燥：</b>阴凉通风自然干，不要密封闷住，否则易外干内湿。</li>
+              </ul>
+              <div class="notice-tip">建议：修复更稳的做法是<b>两轮薄涂</b>（先 1:3 打底 → 完全干燥 → 再少量补涂），通常优于一次上浓。</div>
+            </div>
+            
+            <div class="card">
+              <div class="notice-head">FOR NEW BUILD (全新制作)</div>
+              <ul class="list-check">
+                <li><b style="color:#fff">第一原则：</b>全新载体滴加后更容易“表面先干、内部未干”，必须<b>延长干燥时间</b>。</li>
+                <li><b style="color:#fff">层间干燥：</b>推荐<b>分轮上铂</b>：第 1 轮薄涂 → 干透 → 第 2 轮补涂 → 干透 → 激活。</li>
+                <li><b style="color:#fff">摆放承托：</b>下面垫玻璃/塑料片，<span class="warn-text">切勿垫纸巾</span>（纸会吸走贵金属）。</li>
+                <li><b style="color:#fff">严禁：</b>湿着激活、用全酒精长期浸泡。</li>
+              </ul>
+              <div class="notice-tip">新手建议：全新制作优先从 <b>1:3</b> 建立均匀底层；点火稳定后，再考虑 1:2 加强。</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:80px;">
+          <h2 style="text-align:center;">FAQ & 故障排查 (纯铂)</h2>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <span class="faq-q">Q1 · 点不着 / 需要反复打火</span>
+              <span class="faq-a">常见原因：未干透、激活热量不足、上铂太少。处理：确保干燥；优先离火烘烤激活；按 1:3 补涂一轮。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q2 · 表面发白结晶 / 有硬壳</span>
+              <span class="faq-a">原因：一次上浓、酒精太多干太快。处理：纯水轻润溶解表面，吸干后改用 1:3 少量多次。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q3 · 点着后一会儿变暗/熄火</span>
+              <span class="faq-a">原因：供油不畅或载体过密。处理：确保通气；新做触媒建议先做两轮 1:3 打底。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q4 · 异味大 / 刺鼻</span>
+              <span class="faq-a">原因：载体不洁、未干透就激活。处理：载体预清洁；激活必须在通风处进行，避免吸入烟雾。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q5 · 母液/稀释液怎么存放</span>
+              <span class="faq-a">母液密封避光保存。稀释液建议现配现用，低温析出可温水浴溶解，切勿明火加热。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q6 · 可用哪些水/酒精</span>
+              <span class="faq-a">水：去离子水/蒸馏水/哇哈哈纯净水。酒精：75-95%均可用于助渗，但不建议全酒精稀释母液。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q7 · 用量怎么拿捏</span>
+              <span class="faq-a">关键是“润而不滴”。宁可两次薄涂，也不要一次浓涂堆积。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q8 · 兼容性与禁忌</span>
+              <span class="faq-a">避免接触易腐蚀金属（铝/镀层）。勿与漂白剂、强碱混合。建议用玻璃/PP容器与滴管。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="pd" class="section pd-theme">
+      <div class="container">
+        <div class="header-box">
+          <span class="tag">ALLOY SERIES</span>
+          <h1 class="title-xl">PT–<span class="pd-grad-text">PD</span></h1>
+          <p class="subtitle">铂钯复合触媒液 · 稳定耐用 · 适应复杂环境</p>
+          <p class="quote" style="color:var(--pd-main)">“不是极端性能，而是长期可靠。”</p>
+          <p class="subtitle" style="margin-top:15px; font-size:0.95rem; opacity:0.8;">铂钯复合体系是经典的触媒方案。相比纯铂的极限响应，铂钯在<b>稳定性、抗中毒能力</b>方面表现更均衡，适合环境复杂或需要长期连续工作的怀炉。</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <span class="icon">🔥</span>
+            <h3>稳定启动</h3>
+            <p class="text-muted">铂负责点火，钯负责持航。冷启动需预热 3-5 秒，但点燃后更平稳、不易掉火。</p>
+          </div>
+          <div class="card">
+            <span class="icon">🛡️</span>
+            <h3>抗毒化护盾</h3>
+            <p class="text-muted">钯对杂质与燃料残留更耐受，对旧棉、轻度污染载体的容错率明显更高。</p>
+          </div>
+          <div class="card">
+            <span class="icon">⚙️</span>
+            <h3>寿命导向</h3>
+            <p class="text-muted">复合催化层结构更稳定，适合长时间连续使用与反复启停场景。</p>
+          </div>
+        </div>
+
+        <div class="steps-box">
+          <h2 style="text-align:center; margin-bottom:50px;">铂钯 · 差异化操作指南</h2>
+
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h3 class="step-title">稀释与静置</h3>
+              <p class="text-muted">
+                本品为<b>铂钯复合母液</b>，推荐稀释比例：<span class="highlight">1:2 ～ 1:4</span>（容错率高）。<br>
+                - 新棉 / 首次制作：<b>1:3 或 1:4</b><br>
+                - 旧棉修复 / 活性下降：<b>1:2</b><br>
+                <span class="highlight">关键技巧：</span>滴加后建议<b>静置 10 分钟</b>让钯离子深入渗透，再进行自然风干。
               </p>
             </div>
           </div>
 
-        </div>
-      </div>
-    </section>
-
-    <!-- 放置注意事项：修复 & 全新制作 -->
-    <section class="section">
-      <div class="container">
-        <h2 style="text-align:center; margin-bottom:20px;">PLACEMENT NOTES</h2>
-        <p class="desc" style="text-align:center;">
-          以下为<b>修复旧触媒</b>与<b>全新制作触媒</b>时，“棉头/载体在滴加后如何放置”的关键注意事项。
-          这一步做对了，能显著减少<b>结晶、表面硬壳、外干内湿、激活失败</b>等问题。
-        </p>
-
-        <div class="notice-grid">
-
-          <div class="notice-card">
-            <div class="notice-tag">FOR REPAIR</div>
-            <div class="notice-title">修复旧触媒 · 放置要点</div>
-            <ul class="notice-list">
-              <li><span class="notice-strong">放置姿态：</span>建议<b>平放</b>在惰性托盘上（玻璃/瓷盘/PP/PE），避免液体向一侧“跑偏”造成分布不均。</li>
-              <li><span class="notice-strong">避免接触：</span>棉头<b>不要直接接触金属</b>（尤其铝件/镀层件），防止被酸腐蚀或污染催化层。</li>
-              <li><span class="notice-strong">通风干燥：</span>放在<b>阴凉通风处</b>，让水分自然蒸发；如环境湿冷，建议 40–60℃ 低温烘干到完全干燥。</li>
-              <li><span class="notice-strong">防尘但不闷：</span>可用<b>透气罩</b>（纱网/滤纸罩）防落灰，但<b>不要密封闷住</b>，否则易外干内湿。</li>
-              <li><span class="notice-warn">严禁：</span>未干透直接激活、靠近明火长时间烘烤、一次滴加过量堆积在表面。</li>
-            </ul>
-
-            <div class="notice-tip">
-              建议：修复更稳的做法是<b>两轮薄涂</b>（先 1:3 打底 → 完全干燥 → 再少量补涂），通常优于一次上浓。
-            </div>
-          </div>
-
-          <div class="notice-card">
-            <div class="notice-tag">FOR NEW BUILD</div>
-            <div class="notice-title">全新制作触媒 · 放置要点</div>
-            <ul class="notice-list">
-              <li><span class="notice-strong">第一原则：</span>全新载体滴加后更容易“表面先干、内部未干”，必须<b>延长干燥时间</b>，避免后续激活飞溅与异味。</li>
-              <li><span class="notice-strong">层间干燥：</span>推荐<b>分轮上铂</b>：第 1 轮薄涂 → 完全干燥 → 第 2 轮补涂 → 再干燥，再进入激活。</li>
-              <li><span class="notice-strong">摆放承托：</span>载体下面垫<b>惰性材料</b>（玻璃/瓷/PP/PE），不要用纸巾直接垫底（纸会吸走溶液导致负载不均）。</li>
-              <li><span class="notice-strong">避免“积液池”：</span>放置时不要让边缘形成低洼积液，必要时轻轻调整姿态，让溶液<b>均匀分布</b>而不是堆在某个角。</li>
-              <li><span class="notice-warn">严禁：</span>湿着激活、用全酒精长期浸泡、密封闷干（会导致结晶/硬壳/活性层不牢）。</li>
-            </ul>
-
-            <div class="notice-tip">
-              新手建议：全新制作优先从 <b>1:3</b> 建立均匀底层；等点火稳定后，再考虑用 <b>1:2</b> 做加强层。
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2 style="text-align:center; margin-bottom:20px;">TROUBLESHOOTING & FAQ</h2>
-        <p class="desc" style="text-align:center;">
-          用量、结晶、点火失败、异味、存储与稀释介质选择的快速排查与纠偏建议。
-        </p>
-
-        <div class="faq-grid">
-          <div class="faq-item">
-            <div class="faq-q">Q1 · 点不着 / 需要反复打火</div>
-            <div class="faq-a">
-              常见原因：未干透、激活热量不足、上铂太少或分布不均。处理：先确保完全干燥；优先采用离火烘烤激活；仍弱则按 1:3 少量补涂一轮后再激活。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q2 · 表面发白结晶 / 有硬壳</div>
-            <div class="faq-a">
-              常见原因：一次上浓、滴加过量、酒精比例过高导致干得太快。处理：降到 1:3，减少酒精比例（或纯水稀释），改为少量多次；必要时用少量纯水轻润溶解表面再吸干后重涂。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q3 · 点着后一会儿变暗/熄火</div>
-            <div class="faq-a">
-              常见原因：燃料供给/通气不匹配、载体过厚过密、催化层不均。处理：确保通气通道通畅；全新制作建议先做两轮 1:3 打底建立均匀层，再视情况加强到 1:2。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q4 · 异味大 / 刺鼻</div>
-            <div class="faq-a">
-              常见原因：载体带油带胶、未干透就激活、通风差。处理：载体先预清洁与充分干燥；激活步骤务必在通风处进行，避免吸入烟雾或蒸汽。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q5 · 母液/稀释液怎么存放</div>
-            <div class="faq-a">
-              母液：密封、避光、阴凉保存，避免高温暴晒。稀释液：建议现配现用，不建议长期存放；低温析出可回温（温水浴）溶解后再用，切勿明火加热。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q6 · 可用哪些水/酒精</div>
-            <div class="faq-a">
-              水：去离子水/蒸馏水/可靠纯净水（哇哈哈纯净水可用）。酒精：70–95% 均可用于快干、助渗与激活；不建议全酒精作为母液唯一稀释溶剂。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q7 · 用量怎么拿捏</div>
-            <div class="faq-a">
-              关键不是越湿越好，而是润而不滴、均匀渗透、不积液。经验：宁可两次薄涂，也不要一次浓涂堆盐结晶。
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-q">Q8 · 兼容性与混用禁忌</div>
-            <div class="faq-a">
-              避免接触易被酸腐蚀的金属表面（如铝件、部分镀层）。请勿与漂白剂/含氯清洁剂、强碱或未知还原剂混合。建议使用玻璃/PP/PE 容器与滴管操作。
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h3 class="step-title">温和激活</h3>
+              <p class="text-muted">
+                推荐<b>离火加热激活</b>。铂钯体系激活窗口更宽，不需要追求瞬间高温，稳定加热直到颜色变深即可。
+              </p>
             </div>
           </div>
         </div>
 
+        <div style="margin-top:80px;">
+          <h2 style="text-align:center;">FAQ (铂钯专用)</h2>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <span class="faq-q">Q · 铂钯和纯铂怎么选？</span>
+              <span class="faq-a">追求极致冷启动、短时间爆发 → 选纯铂；<br>追求稳定耐用、长期使用、环境复杂 → 选铂钯。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q · 铂钯是不是更“耐用”？</span>
+              <span class="faq-a">是的。钯能显著提高抗中毒与抗老化能力，在旧棉或非理想燃料条件下表现更稳定。</span>
+            </div>
+            <div class="faq-item">
+              <span class="faq-q">Q · 进阶玩法？</span>
+              <span class="faq-a">推荐“三明治法”：底层用铂钯液打底（保长效），表层薄涂纯铂液（保极速点火）。这样兼具两者的优点。</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <section class="section">
+
+    <div id="comp" class="section">
       <div class="container">
+        <div class="header-box">
+          <span class="tag">TECHNICAL COMPARISON</span>
+          <h1 class="title-xl">选型 <span style="opacity:0.3">VS</span> 对比</h1>
+          <p class="subtitle">同为贵金属触媒体系，但在<b>缺氧稳定性、启动温度、耐用性</b>上存在明显取向差异。</p>
+        </div>
+
+        <div class="grid-3" style="grid-template-columns: 1fr 1fr;">
+          <div class="card" style="border-top: 3px solid var(--pt-main);">
+            <h3 style="color:var(--pt-main)">纯铂 (Pure Pt)</h3>
+            <p class="text-muted">优势：极低启动温度，瞬时点燃。</p>
+            <table class="comp-table">
+              <tr><th>指标</th><th>表现</th></tr>
+              <tr><td>催化活性</td><td class="val-hi"><span class="star">★★★★★</span></td></tr>
+              <tr><td>缺氧环境</td><td class="val-hi">非常稳定</td></tr>
+              <tr><td>起燃温度</td><td class="val-hi">极低 (秒燃)</td></tr>
+              <tr><td>热释放</td><td class="val-hi">爆发型</td></tr>
+              <tr><td>成本</td><td class="val-hi">高</td></tr>
+            </table>
+          </div>
+
+          <div class="card" style="border-top: 3px solid var(--pd-main);">
+            <h3 style="color:var(--pd-main)">铂钯 (Pt-Pd)</h3>
+            <p class="text-muted">优势：宽容耐用，长期稳定。</p>
+            <table class="comp-table">
+              <tr><th>指标</th><th>表现</th></tr>
+              <tr><td>催化活性</td><td class="val-hi"><span class="star">★★★★☆</span></td></tr>
+              <tr><td>缺氧环境</td><td class="val-hi">稳定</td></tr>
+              <tr><td>起燃温度</td><td>略高 (需预热)</td></tr>
+              <tr><td>热释放</td><td class="val-hi">恒温型</td></tr>
+              <tr><td>成本</td><td>中等</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:40px; text-align:center;">
+          <h3>一句话结论</h3>
+          <p style="margin-top:10px; font-size:1.1rem; color:#fff;">
+            ▶ 我要在<b>缺氧条件下快速点燃</b> → 选 <b style="color:var(--pt-main)">纯铂</b><br><br>
+            ▶ 我要<b>稳定耐用、性价比更高</b> → 选 <b style="color:var(--pd-main)">铂钯</b>
+          </p>
+        </div>
+
         <div class="warning-box">
-          <span class="warning-icon">⚠️</span>
-          <h3 class="warning-title">安全警示 WARNING</h3>
-          <p class="warning-text">
-            本品含有强酸及贵金属成分，具有<b>强腐蚀性</b>。严禁接触皮肤或眼睛；如不慎接触，请立即用大量清水冲洗。<br>
+          <div style="font-size:3rem; margin-bottom:20px; color:var(--danger);">⚠️</div>
+          <h3 style="color:var(--danger); margin-bottom:20px;">安全警示 (SAFETY WARNING)</h3>
+          <p class="text-muted">
+            本品含有强酸及贵金属成分，具有<b>强腐蚀性</b>。<br>
+            严禁接触皮肤或眼睛；如不慎接触，请立即用大量清水冲洗。<br>
             建议佩戴手套与护目镜操作；激活步骤请在通风处进行。请密封保存于阴凉避光处，远离儿童。
           </p>
         </div>
       </div>
-    </section>
+    </div>
+
+
+    <div id="buy" class="section">
+      <div class="container">
+        <div class="header-box">
+          <span class="tag">PURCHASE NOW</span>
+          <h1 class="title-xl">立即 <span style="color:#fff">购买</span></h1>
+          <p class="subtitle">欢迎下单使用</p>
+        </div>
+
+        <div class="buy-grid">
+          <div class="card card-buy pt-buy-card">
+            <h3 class="buy-title">纯铂触媒液</h3>
+            <p class="buy-desc">PURE PLATINUM SOLUTION</p>
+            <div class="qr-container">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://m.tb.cn/h.7tiwD2T?tk=toEKUQYnsEk" alt="纯铂购买二维码" class="qr-img">
+            </div>
+            <p style="font-size:0.8rem; color:#888;">扫码购买 · 备注 "纯铂"</p>
+            <span class="buy-btn">立即下单</span>
+          </div>
+
+          <div class="card card-buy pd-buy-card">
+            <h3 class="buy-title">铂钯触媒液</h3>
+            <p class="buy-desc">PT-PD ALLOY SOLUTION</p>
+            <div class="qr-container">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://m.tb.cn/h.7tiwD2T?tk=toEKUQYnsEk" alt="铂钯购买二维码" class="qr-img">
+            </div>
+            <p style="font-size:0.8rem; color:#888;">扫码购买 · 备注 "铂钯"</p>
+            <span class="buy-btn">立即下单</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <footer>
-      <div class="container">
-        PURE PT SERIES | 怀炉触媒养护方案<br>
-        <span style="opacity:0.5; font-size:10px;">PRODUCT BATCH: 2026-铂金触媒液</span>
-      </div>
+      PREMIUM CATALYST SOLUTIONS<br>
+      <span style="opacity:0.5; font-size:11px;">PRODUCT BATCH: 2026-FULL-DOCS</span>
     </footer>
+
   </div>
-
-  <script>
-  (() => {
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
-
-    const canvas = document.getElementById('burnerCanvas');
-    const ctx = canvas.getContext('2d', { alpha: true });
-
-    const CONF = {
-      maxDPR: 1.25,
-      scale: 0.55,
-      fps: 24,
-      cell: 55,
-      intensity: 1.20,
-      flicker: 0.65,
-      hotRate: 0.010,
-      hotLife: [1200, 2200],
-      smoke: 0.10
-    };
-
-    let dpr = 1, W = 0, H = 0, cw = 0, ch = 0;
-
-    function resize(){
-      dpr = Math.min(window.devicePixelRatio || 1, CONF.maxDPR);
-      W = Math.floor(window.innerWidth);
-      H = Math.floor(window.innerHeight);
-      cw = Math.floor(W * dpr * CONF.scale);
-      ch = Math.floor(H * dpr * CONF.scale);
-      canvas.width = cw;
-      canvas.height = ch;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-    }
-    window.addEventListener('resize', resize, { passive:true });
-    resize();
-
-    const fract = x => x - Math.floor(x);
-
-    function hash2(ix, iy){
-      const s = Math.sin(ix * 127.1 + iy * 311.7) * 43758.5453123;
-      return fract(s);
-    }
-
-    function lerp(a,b,t){ return a + (b-a)*t; }
-    function smooth(t){ return t*t*(3-2*t); }
-
-    function noise2(x, y){
-      const ix = Math.floor(x), fx = x - ix;
-      const iy = Math.floor(y), fy = y - iy;
-      const v00 = hash2(ix,   iy);
-      const v10 = hash2(ix+1, iy);
-      const v01 = hash2(ix,   iy+1);
-      const v11 = hash2(ix+1, iy+1);
-      const sx = smooth(fx), sy = smooth(fy);
-      const a = lerp(v00, v10, sx);
-      const b = lerp(v01, v11, sx);
-      return lerp(a, b, sy);
-    }
-
-    const hotSpots = [];
-    function rand(a,b){ return a + Math.random()*(b-a); }
-    function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
-
-    function hexPath(cx, cy, r){
-      const a = Math.PI / 3;
-      ctx.beginPath();
-      for (let i=0;i<6;i++){
-        const x = cx + r * Math.cos(a*i + Math.PI/6);
-        const y = cy + r * Math.sin(a*i + Math.PI/6);
-        if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-      }
-      ctx.closePath();
-    }
-
-    function colorFromI(i){
-      const t = clamp(i, 0, 1);
-      let r,g,b,a;
-      if (t < 0.55){
-        const k = t/0.55;
-        r = lerp(40, 210, k);
-        g = lerp(10, 85,  k);
-        b = lerp(10, 20,  k);
-        a = lerp(0.05, 0.45, k);
-      } else {
-        const k = (t-0.55)/0.45;
-        r = lerp(210, 255, k);
-        g = lerp(85,  205, k);
-        b = lerp(20,  120, k);
-        a = lerp(0.45, 0.78, k);
-      }
-      return `rgba(${r|0},${g|0},${b|0},${a})`;
-    }
-
-    function spawnHot(ts){
-      const count = (Math.random() < 0.35) ? 1 : 0;
-      for (let i=0;i<count;i++){
-        hotSpots.push({
-          x: rand(0, cw),
-          y: rand(ch*0.30, ch*0.92),
-          r: rand(40, 90),
-          born: ts,
-          life: rand(CONF.hotLife[0], CONF.hotLife[1])
-        });
-      }
-      while (hotSpots.length > 10) hotSpots.shift();
-    }
-
-    function hotField(x,y,ts){
-      let add = 0;
-      for (const h of hotSpots){
-        const age = ts - h.born;
-        if (age > h.life) continue;
-        const k = 1 - age / h.life;
-        const dx = x - h.x, dy = y - h.y;
-        const d2 = dx*dx + dy*dy;
-        const s2 = h.r*h.r;
-        add += Math.exp(-d2/(2*s2)) * (0.75*k);
-      }
-      return add;
-    }
-
-    let running = true;
-    document.addEventListener('visibilitychange', () => {
-      running = !document.hidden;
-    });
-
-    let last = 0;
-    const frameInterval = 1000 / CONF.fps;
-
-    function draw(ts){
-      if (!running){ requestAnimationFrame(draw); return; }
-      if (ts - last < frameInterval){ requestAnimationFrame(draw); return; }
-      last = ts;
-
-      ctx.clearRect(0,0,cw,ch);
-
-      if (CONF.smoke > 0){
-        const sm = CONF.smoke;
-        const gy = ctx.createLinearGradient(0, ch*0.35, 0, ch);
-        gy.addColorStop(0, `rgba(255,150,70,0.00)`);
-        gy.addColorStop(1, `rgba(255,150,70,${0.06*sm})`);
-        ctx.fillStyle = gy;
-        ctx.fillRect(0,0,cw,ch);
-      }
-
-      const r = CONF.cell * 0.52;
-      const stepX = CONF.cell;
-      const stepY = CONF.cell * 0.86;
-
-      const t1 = ts * 0.00022;
-      const t2 = ts * 0.00010;
-
-      const globalFlicker = 0.85 + CONF.flicker * 0.12 * Math.sin(ts*0.0014);
-
-      if (Math.random() < CONF.hotRate) spawnHot(ts);
-
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-
-      for (let y = -stepY; y < ch + stepY; y += stepY){
-        const row = Math.round(y / stepY);
-        const offsetX = (row % 2) ? stepX*0.5 : 0;
-
-        for (let x = -stepX; x < cw + stepX; x += stepX){
-          const cx = x + offsetX;
-          const cy = y;
-
-          const nx = cx / 120;
-          const ny = cy / 120;
-
-          const nA = noise2(nx + t1, ny + t2);
-          const nB = noise2(nx*1.7 - t2, ny*1.7 + t1);
-
-          let i = Math.pow(clamp(nA*0.7 + nB*0.3, 0, 1), 2.25);
-
-          const heatByY = clamp((cy/ch - 0.18) * 1.25, 0, 1);
-          i *= (0.35 + 0.65*heatByY);
-
-          i += hotField(cx, cy, ts) * 0.85;
-
-          i = clamp(i * CONF.intensity * globalFlicker, 0, 1);
-
-          if (i < 0.12) continue;
-
-          ctx.fillStyle = colorFromI(i);
-          hexPath(cx, cy, r);
-          ctx.fill();
-
-          if (i > 0.75){
-            ctx.globalAlpha = 0.55;
-            ctx.fillStyle = `rgba(255,230,170,${0.20 + 0.25*(i-0.75)})`;
-            hexPath(cx, cy, r*0.55);
-            ctx.fill();
-            ctx.globalAlpha = 1;
-          }
-        }
-      }
-
-      ctx.restore();
-
-      requestAnimationFrame(draw);
-    }
-
-    requestAnimationFrame(draw);
-  })();
-  </script>
 </body>
 </html>
